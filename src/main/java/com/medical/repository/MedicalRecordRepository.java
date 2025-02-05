@@ -1,14 +1,16 @@
 package com.medical.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.medical.entities.MedicalRecord;
 
+public interface MedicalRecordRepository extends MongoRepository<MedicalRecord, String> {
+//	@Query("select m from MedicalRecord m where m.patientDetails._id =:patientId")
+//	List<MedicalRecord> getMedicalRecordsByPatientId(Long patientId);
 
-public interface MedicalRecordRepository extends MongoRepository<MedicalRecord, Integer> {
-// @Query("select m from MedicalRecord m join fetch m.")
-//	@Query("select c from Category c left join fetch c.blogPosts where c.id=:id")
-//	Category getCategoryAndPostDetails(Long id);
-//	 @Query("select m from MedicalRecord m join fetch m.patientId where m.doctorId.id =:id")
-//	List<MedicalRecord> getByDoctorId(Long id);
+	Page<MedicalRecord> findByPatientDetails_Id(Long patientId, Pageable pageable);
+
+	Page<MedicalRecord> findByDoctorDetails_Id(Long doctorId, Pageable pageable);
 }
