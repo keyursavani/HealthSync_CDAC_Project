@@ -15,11 +15,11 @@ import lombok.AllArgsConstructor;
 @Transactional
 @AllArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-	private LoginUserRepository userDao;
+	private LoginUserRepository loginUserRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		LoginUser user = userDao.findByEmail(email)
+		LoginUser user = loginUserRepository.findById_email(email)
 				.orElseThrow(() -> new UsernameNotFoundException("Invalid email and password"));
 		return new CustomUserDetails(user);
 	}

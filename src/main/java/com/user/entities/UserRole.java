@@ -1,5 +1,5 @@
 package com.user.entities;
 
-public enum UseRole {
+public enum UserRole {
 DOCTOR,PATIENT,INSURANE_PROVIDER
 }

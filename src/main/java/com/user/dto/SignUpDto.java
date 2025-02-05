@@ -1,7 +1,7 @@
 package com.user.dto;
 
 
-import com.user.entities.UseRole;
+import com.user.entities.UserRole;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -21,7 +21,7 @@ public class SignUpDto {
 	@NotBlank(message = "Name must be supplied")
 	private String firstName;
 	@NotNull(message = "Role must be supplied")
-	private UseRole role;
+	private UserRole role;
 	@NotBlank(message = "Password must be supplied")
 	private String password;
 }

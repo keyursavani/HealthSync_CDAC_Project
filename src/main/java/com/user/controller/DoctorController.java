@@ -1,5 +1,8 @@
 package com.user.controller;
 
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.user.dto.DoctorRecordDto;
+import com.user.dto.MedicalRecordPatientDto;
+import com.user.dto.RefreshJwtTokenDto;
 import com.user.dto.RegisterDoctorDto;
 import com.user.dto.ResponseDto;
 import com.user.dto.SignInDto;
@@ -30,6 +35,7 @@ public class DoctorController {
 	private DoctorService doctorService;
 	private LoginUserService loginUserService;
 	private JwtTokenUtils jwtTokenUtils;
+	private ModelMapper modelMapper;
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerDoctor(@RequestBody @Valid RegisterDoctorDto dto) {
@@ -49,12 +55,33 @@ public class DoctorController {
 	public ResponseEntity<?> getDoctorById(@PathVariable Long doctorId){
 		return ResponseEntity.ok(doctorService.getDoctorById(doctorId));
 	}
-
-	@GetMapping("/records/{doctorId}")
-	public ResponseEntity<?> getMyRecords(@PathVariable Long doctorId) {
-		DoctorRecordDto dto = doctorService.getMedicalRecord(doctorId);
-		return ResponseEntity.ok(dto);
-
+	
+	@GetMapping("/refreshToken")
+	public ResponseEntity<?> refreshJwtToken(@RequestBody @Valid SignInDto dto){
+		SignInResponseJwtDto sdto = doctorService.doctorLogin(dto);
+		loginUserService.addLoginUser(sdto);
+		SignInResponseDto ddto = jwtTokenUtils.generateJwtToken(dto, sdto);
+		RefreshJwtTokenDto rdto = modelMapper.map(ddto, RefreshJwtTokenDto.class);
+		return ResponseEntity.ok(new ResponseDto(HttpStatus.CREATED.value(),"Success",rdto));
 	}
+	
+	@GetMapping("/logout")
+	public ResponseEntity<?> doctorLogOut(@RequestBody String email){
+		return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(),"Success"));
+	}
+	
+	
+
+//	@GetMapping("/records/{doctorId}")
+//	public ResponseEntity<?> getMyRecords(@PathVariable Long doctorId) {
+//		DoctorRecordDto dto = doctorService.getMedicalRecord(doctorId);
+//		return ResponseEntity.ok(dto);
+//	}
+	
+//	@GetMapping("/records/{doctorId}")
+//	public ResponseEntity<?> getMyRecords(@PathVariable Long doctorId) {
+//		List<MedicalRecordPatientDto> list = doctorService.getMedicalRecord(doctorId);
+//		return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "Success", list));
+//	}
 
 }

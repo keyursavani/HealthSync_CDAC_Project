@@ -24,8 +24,8 @@ public class SecurityConfig {
 	public SecurityFilterChain authorizeRequests(HttpSecurity http) throws Exception {
 		http.csrf(customizer -> customizer.disable())
 				.authorizeHttpRequests(request -> request
-						.requestMatchers("/user/signup", "/user/signin", "/patient/signup","/patient/{patientId}", "/patient/signin",
-								"/doctor/signup", "/doctor/signin", "/doctor/{doctorId}","/insuranceprovider/signup",
+						.requestMatchers("/user/signup", "/user/signin","/user/{emailId}", "/patient/signup","/patient/{patientId}", "/patient/signin","/patient/refreshToken",
+								"/doctor/signup", "/doctor/signin", "/doctor/{doctorId}","/doctor/refreshToken","/insuranceprovider/signup",
 								"/insuranceprovider/signin", "/v*/api-doc*/**", "/swagger-ui/**")
 						.permitAll().requestMatchers(HttpMethod.OPTIONS).permitAll()
 						.requestMatchers("/patient/records/{patientId}", "/insurance/request",

@@ -1,6 +1,8 @@
 package com.user.service;
 
+import java.util.List;
 
+import com.user.dto.MedicalRecordPatientDto;
 import com.user.dto.PatientDto;
 import com.user.dto.PatientInsuranceReqDto;
 import com.user.dto.PatientRecordDto;
@@ -11,9 +13,13 @@ import com.user.dto.SignInResponseJwtDto;
 public interface PatientService {
 
 	public String registerPatient(RegisterPatientDto dto);
-	  public SignInResponseJwtDto patientLogin(SignInDto dto);
-	public PatientRecordDto getMedicalRecord(Long patientId);
-	 public PatientInsuranceReqDto getInsuranceRequests(Long patientId);
-	 public PatientDto getPatientById(Long patientId);
+
+	public SignInResponseJwtDto patientLogin(SignInDto dto);
+
+//	public List<MedicalRecordPatientDto> getMedicalRecord(Long patientId);
+
+	public PatientInsuranceReqDto getInsuranceRequests(Long patientId);
+
+	public PatientDto getPatientById(Long patientId);
 
 }
