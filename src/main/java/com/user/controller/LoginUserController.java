@@ -35,7 +35,7 @@ public class LoginUserController {
 		return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), userService.signUp(dto)));
 	}
 
-	@GetMapping("/signin")
+	@PostMapping("/signin")
 	public ResponseEntity<?> signIn(@RequestBody @Valid SignInDto dto) {
 		SignInResponseJwtDto user = userService.signIn(dto);
 

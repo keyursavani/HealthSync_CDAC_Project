@@ -1,9 +1,6 @@
 package com.user.service;
 
-import java.util.List;
-
 import com.user.dto.DoctorDto;
-import com.user.dto.MedicalRecordPatientDto;
 import com.user.dto.RegisterDoctorDto;
 import com.user.dto.SignInDto;
 import com.user.dto.SignInResponseJwtDto;

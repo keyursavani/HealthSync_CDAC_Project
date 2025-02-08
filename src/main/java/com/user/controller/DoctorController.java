@@ -1,7 +1,5 @@
 package com.user.controller;
 
-import java.util.List;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.user.dto.DoctorRecordDto;
-import com.user.dto.MedicalRecordPatientDto;
+import com.user.dto.SignoutRequestDto;
 import com.user.dto.RefreshJwtTokenDto;
 import com.user.dto.RegisterDoctorDto;
 import com.user.dto.ResponseDto;
@@ -40,15 +37,15 @@ public class DoctorController {
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerDoctor(@RequestBody @Valid RegisterDoctorDto dto) {
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(new ResponseDto(HttpStatus.CREATED.value(), doctorService.registerDoctor(dto)));
+				.body(new ResponseDto(HttpStatus.CREATED.value(),"Success" ,doctorService.registerDoctor(dto)));
 	}
 
-	@GetMapping("/signin")
+	@PostMapping("/signin")
 	public ResponseEntity<?> doctorLogin(@RequestBody @Valid SignInDto dto) {
 		SignInResponseJwtDto sdto = doctorService.doctorLogin(dto);
 		loginUserService.addLoginUser(sdto);
 		SignInResponseDto ddto = jwtTokenUtils.generateJwtToken(dto, sdto);
-		return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "Login success", ddto));
+		return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "Success", ddto));
 	}
 	
 	@GetMapping("/{doctorId}")
@@ -56,7 +53,7 @@ public class DoctorController {
 		return ResponseEntity.ok(doctorService.getDoctorById(doctorId));
 	}
 	
-	@GetMapping("/refreshToken")
+	@PostMapping("/refreshToken")
 	public ResponseEntity<?> refreshJwtToken(@RequestBody @Valid SignInDto dto){
 		SignInResponseJwtDto sdto = doctorService.doctorLogin(dto);
 		loginUserService.addLoginUser(sdto);
@@ -65,9 +62,9 @@ public class DoctorController {
 		return ResponseEntity.ok(new ResponseDto(HttpStatus.CREATED.value(),"Success",rdto));
 	}
 	
-	@GetMapping("/logout")
-	public ResponseEntity<?> doctorLogOut(@RequestBody String email){
-		return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(),"Success"));
+	@PostMapping("/signout")
+	public ResponseEntity<?> doctorLogOut(@RequestBody @Valid SignoutRequestDto dto){
+		return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(),"Success",loginUserService.userSignOut(dto)));
 	}
 	
 	

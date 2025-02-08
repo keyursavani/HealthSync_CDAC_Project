@@ -1,7 +1,5 @@
 package com.user.dto;
 
-import com.user.entities.UserRole;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,10 +7,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SignInResponseDto {
+public class InsuranceproviderDto {
 	private Long id;
+	private String companyName;
+	private long contactNumber;
 	private String email;
-	private String firstName;
-	private UserRole role;
-	private String authToken;
+	private String address;
 }

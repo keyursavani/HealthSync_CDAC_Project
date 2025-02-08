@@ -12,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 @EnableFeignClients
@@ -47,5 +49,24 @@ public class HealthSyncUserServiceApplication {
 	public WebClient.Builder webClient() {
 	    return WebClient.builder();
 	}
+	
+	 @Bean
+	    public WebMvcConfigurer corsConfigurer() {
+	        return new WebMvcConfigurer() {
+	            @Override
+	            public void addCorsMappings(CorsRegistry registry) {
+	                registry.addMapping("/**")
+	                        .allowedOrigins("http://localhost:3000")
+	                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+	                        .allowedHeaders("*")
+	                        .allowCredentials(true);
+	            }
+	        };
+	    }
+//	 # Allow CORS for frontend
+//	 spring.web.cors.allowed-origins=http://localhost:3000
+//	 spring.web.cors.allowed-methods=GET,POST,PUT,DELETE,OPTIONS
+//	 spring.web.cors.allowed-headers=*
+//	 spring.web.cors.allow-credentials=true
 
 }

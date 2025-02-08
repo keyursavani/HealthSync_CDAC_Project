@@ -24,19 +24,14 @@ public class SecurityConfig {
 	public SecurityFilterChain authorizeRequests(HttpSecurity http) throws Exception {
 		http.csrf(customizer -> customizer.disable())
 				.authorizeHttpRequests(request -> request
-						.requestMatchers("/user/signup", "/user/signin","/user/{emailId}", "/patient/signup","/patient/{patientId}", "/patient/signin","/patient/refreshToken",
-								"/doctor/signup", "/doctor/signin", "/doctor/{doctorId}","/doctor/refreshToken","/insuranceprovider/signup",
-								"/insuranceprovider/signin", "/v*/api-doc*/**", "/swagger-ui/**")
+						.requestMatchers("/user/signup", "/user/signin","/user/{emailId}", "/patient/signup","/patient/{patientId}", "/patient/signin","/patient/signout","/patient/refreshToken",
+								"/doctor/signup", "/doctor/signin", "/doctor/{doctorId}","/doctor/refreshToken","/doctor/signout","/insuranceprovider/signup", "/insuranceprovider/signin","/insuranceprovider/{pid}","/insuranceprovider/refreshToken","/insuranceprovider/signout" ,"/v*/api-doc*/**", "/swagger-ui/**")
 						.permitAll().requestMatchers(HttpMethod.OPTIONS).permitAll()
-						.requestMatchers("/patient/records/{patientId}", "/insurance/request",
-								"/patient/insurance/requests/{patientId}")
+						.requestMatchers("/insurance/request")
 						.hasAuthority("PATIENT")
-						.requestMatchers("/insuranceplan/add", "/insuranceprovider/plans/{providerId}",
-								"/insuranceprovider/insurance/requests/{providerId}",
-								"/insuranceprovider/patient/records/{patientId}",
-								"/insuranceprovider/request/{requestId}")
+						.requestMatchers("/insuranceplan/add")
 						.hasAuthority("INSURANE_PROVIDER")
-						.requestMatchers("/medicalrecord/add", "/insuranceplan/add", "/doctor/records/{doctorId}")
+						.requestMatchers("/medicalrecord/add")
 						.hasAuthority("DOCTOR").anyRequest().authenticated())
 //				.httpBasic(Customizer.withDefaults())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

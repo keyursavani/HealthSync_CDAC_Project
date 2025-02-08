@@ -11,7 +11,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class RegisterInsurancesProviderDto {
-	@NotBlank(message = "First name must be supplied")
+	@NotBlank(message = "Company name must be supplied")
 	private String companyName;
 	@NotNull(message = "Contact number must be supplied")
 	private long contactNumber;
