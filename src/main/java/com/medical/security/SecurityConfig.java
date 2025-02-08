@@ -26,15 +26,11 @@ public class SecurityConfig {
 				.authorizeHttpRequests(request -> request
 						.requestMatchers("/v*/api-doc*/**", "/swagger-ui/**")
 						.permitAll().requestMatchers(HttpMethod.OPTIONS).permitAll()
-						.requestMatchers("/medicalrecord/patient/{patientId}", "/insurance/request",
-								"/patient/insurance/requests/{patientId}")
+						.requestMatchers("/medicalrecord/patient/{patientId}")
 						.hasAuthority("PATIENT")
-						.requestMatchers("/insuranceplan/add", "/insuranceprovider/plans/{providerId}",
-								"/insuranceprovider/insurance/requests/{providerId}",
-								"/insuranceprovider/patient/records/{patientId}",
-								"/insuranceprovider/request/{requestId}")
+						.requestMatchers("/insuranceplan/add")
 						.hasAuthority("INSURANE_PROVIDER")
-						.requestMatchers("/medicalrecord/add","/medicalrecord/delete/{recordId}", "/medicalrecord/doctor/{doctorId}","/medicalrecord/update/{recordId}","/medicalrecord/{recordId}","/insuranceplan/add", "/doctor/records/{doctorId}")
+						.requestMatchers("/medicalrecord/add","/medicalrecord/delete/{recordId}", "/medicalrecord/doctor/{doctorId}","/medicalrecord/update/{recordId}","/medicalrecord/{recordId}")
 						.hasAuthority("DOCTOR").anyRequest().authenticated())
 //				.httpBasic(Customizer.withDefaults())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

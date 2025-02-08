@@ -35,7 +35,7 @@ public class MedicalRecordController {
 	@PostMapping("/add")
 	public ResponseEntity<?> addMedicalRecord(@RequestPart("file") MultipartFile file, @RequestPart("medicalRecord") @Valid AddMedicalRecordDto medicalRecord) {
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(new ResponseDto(HttpStatus.CREATED.value(), medicalRecordService.addMedicalRecord(file,medicalRecord)));
+				.body(new ResponseDto(HttpStatus.CREATED.value(),"Success" ,medicalRecordService.addMedicalRecord(file,medicalRecord)));
 	}
 	
 	@GetMapping("/patient/{patientId}")
