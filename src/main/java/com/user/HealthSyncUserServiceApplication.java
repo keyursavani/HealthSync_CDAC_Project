@@ -49,20 +49,20 @@ public class HealthSyncUserServiceApplication {
 	public WebClient.Builder webClient() {
 	    return WebClient.builder();
 	}
-	
-	 @Bean
-	    public WebMvcConfigurer corsConfigurer() {
-	        return new WebMvcConfigurer() {
-	            @Override
-	            public void addCorsMappings(CorsRegistry registry) {
-	                registry.addMapping("/**")
-	                        .allowedOrigins("http://localhost:3000")
-	                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-	                        .allowedHeaders("*")
-	                        .allowCredentials(true);
-	            }
-	        };
-	    }
+//	
+//	 @Bean
+//	    public WebMvcConfigurer corsConfigurer() {
+//	        return new WebMvcConfigurer() {
+//	            @Override
+//	            public void addCorsMappings(CorsRegistry registry) {
+//	                registry.addMapping("/**")
+//	                        .allowedOrigins("http://localhost:3000")
+//	                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+//	                        .allowedHeaders("*")
+//	                        .allowCredentials(true);
+//	            }
+//	        };
+//	    }
 //	 # Allow CORS for frontend
 //	 spring.web.cors.allowed-origins=http://localhost:3000
 //	 spring.web.cors.allowed-methods=GET,POST,PUT,DELETE,OPTIONS
