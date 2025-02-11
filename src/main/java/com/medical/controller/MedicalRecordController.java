@@ -3,13 +3,13 @@ package com.medical.controller;
 import java.io.IOException;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,7 +33,7 @@ public class MedicalRecordController {
 	private MedicalRecordService medicalRecordService;
 
 	@PostMapping("/add")
-	public ResponseEntity<?> addMedicalRecord(@RequestPart("file") MultipartFile file, @RequestPart("medicalRecord") @Valid AddMedicalRecordDto medicalRecord) {
+	public ResponseEntity<?> addMedicalRecord(@RequestPart(value="file" , required = false) MultipartFile file, @RequestPart("medicalRecord") @Valid AddMedicalRecordDto medicalRecord) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(new ResponseDto(HttpStatus.CREATED.value(),"Success" ,medicalRecordService.addMedicalRecord(file,medicalRecord)));
 	}
@@ -54,7 +54,7 @@ public class MedicalRecordController {
 	}
 	
 	@PatchMapping("/update/{recordId}")
-	public ResponseEntity<?> updateMedicalRecord(@PathVariable String recordId, @RequestPart("file") MultipartFile file, @RequestPart("medicalRecord") @Valid UpdateMedicalRecordDto dto) throws IllegalStateException, IOException{
+	public ResponseEntity<?> updateMedicalRecord(@PathVariable String recordId, @RequestPart(value = "file", required = false) MultipartFile file, @RequestPart("medicalRecord") @Valid UpdateMedicalRecordDto dto) throws IllegalStateException, IOException{
 		return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(),"Success",medicalRecordService.updateMedicalRecord(recordId, file, dto)));	
 	}
 	
@@ -62,4 +62,10 @@ public class MedicalRecordController {
 	public ResponseEntity<?> getMedicalRecordById(@PathVariable String recordId){
 		return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "Success",medicalRecordService.getMedicalRecordById(recordId)));
 	}
+	
+	@GetMapping("/image/{name}")
+	public ResponseEntity<?> downloadFile(@PathVariable String name) throws IOException{
+		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("image/png")).body(medicalRecordService.downloadImage(name));		
+	}
+	
 }

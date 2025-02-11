@@ -14,4 +14,5 @@ public class MedicalRecordPatientDto {
 	private String date;
 	private String prescription;
 	private String image;
+	private String imageName;
 }

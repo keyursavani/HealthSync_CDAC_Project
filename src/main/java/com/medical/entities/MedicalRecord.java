@@ -22,4 +22,5 @@ public class MedicalRecord {
 	private String date;
 	private String prescription;
 	private String image;
+	private String imageName;
 }

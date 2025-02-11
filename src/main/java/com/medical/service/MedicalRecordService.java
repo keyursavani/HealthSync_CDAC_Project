@@ -23,4 +23,6 @@ public interface MedicalRecordService {
 			throws IllegalStateException, IOException;
 	
 	public MedicalRecordPatientDto getMedicalRecordById(String recordId);
+	
+	public byte[] downloadImage(String imageName) throws IOException;
 }

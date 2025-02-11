@@ -2,6 +2,7 @@ package com.medical.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,8 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
 	private MedicalRecordRepository medicalRecordRepository;
 	@Autowired
 	private UserServiceClient userServiceClient;
+	@Autowired
+    private EmailService emailService;
 
 	@Override
 	public String addMedicalRecord(MultipartFile file, AddMedicalRecordDto dto) {
@@ -48,18 +51,22 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
 			PatientDto patientDto = userServiceClient.getPatientById(dto.getPatientId());
 			MedicalRecord record = modelMapper.map(dto, MedicalRecord.class);
 
-			if (!file.getOriginalFilename().isEmpty()) {
+//			if (!file.getOriginalFilename().isEmpty()) {
+			if(file != null && !file.isEmpty()) {
 				filePath = imageFolderPath + file.getOriginalFilename();
 				record.setImage(filePath);
+				record.setImageName(file.getOriginalFilename());
 			} else {
 				record.setImage(null);
+				record.setImageName(null);
 			}
 
 			record.setDoctorDetails(doctorDto);
 			record.setPatientDetails(patientDto);
 			record = medicalRecordRepository.save(record);
-
-			if (!file.getOriginalFilename().isEmpty())
+            emailService.sendMail(patientDto.getEmail(), "HealthSync Alert", "New Medical Record Added to Your Account By Dr. "+doctorDto.getFirstName()+ " "+doctorDto.getLastName());
+//			if (!file.getOriginalFilename().isEmpty())
+			if(file != null && !file.isEmpty())
 				file.transferTo(new File(filePath));
 
 			return "Medical record has been added successfully.";
@@ -109,6 +116,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
 		if (record.getDoctorDetails().getId() != dto.getDoctorId())
 			throw new HealthSynsException("You don't have permission to delete this record.");
 		medicalRecordRepository.deleteById(recordId);
+        emailService.sendMail(record.getPatientDetails().getEmail(), "HealthSync Alert", "A Medical Record Was Removed from Your Account By Dr."+record.getDoctorDetails().getFirstName()+ " "+record.getDoctorDetails().getLastName());
 		return "The record has been successfully deleted.";
 	}
 
@@ -121,12 +129,17 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
 			throw new HealthSynsException("You don't have permission to update this record.");
 		record.setPrescription(dto.getPrescription());
 		record.setDate(dto.getDate());
-		if (!file.getOriginalFilename().isEmpty()) {
+		
+//		if (!file.getOriginalFilename().isEmpty()) {
+		if (file != null && !file.isEmpty()) {
 			filePath = imageFolderPath + file.getOriginalFilename();
 			record.setImage(filePath);
+			record.setImageName(file.getOriginalFilename());
 		}
 		record = medicalRecordRepository.save(record);
-		if (!file.getOriginalFilename().isEmpty())
+        emailService.sendMail(record.getPatientDetails().getEmail(), "HealthSync Alert", "A Medical Record Was Updated By Dr."+record.getDoctorDetails().getFirstName()+ " "+record.getDoctorDetails().getLastName());
+//		if (!file.getOriginalFilename().isEmpty())
+		if(file != null && !file.isEmpty())
 			file.transferTo(new File(filePath));
 		return "The record has been successfully updated.";
 	}
@@ -135,6 +148,13 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
 	public MedicalRecordPatientDto getMedicalRecordById(String recordId) {
 	       MedicalRecord medicalRecord = medicalRecordRepository.findById(recordId).orElseThrow(()-> new HealthSynsException("Invalid record id"));
 		return modelMapper.map(medicalRecord, MedicalRecordPatientDto.class);
+	}
+
+	@Override
+	public byte[] downloadImage(String imageName) throws IOException {
+		String filePath = imageFolderPath+imageName;
+		byte[] image = Files.readAllBytes(new File(filePath).toPath());
+		return image;
 	}
 
 }

@@ -24,7 +24,7 @@ public class SecurityConfig {
 	public SecurityFilterChain authorizeRequests(HttpSecurity http) throws Exception {
 		http.csrf(customizer -> customizer.disable())
 				.authorizeHttpRequests(request -> request
-						.requestMatchers("/v*/api-doc*/**", "/swagger-ui/**")
+						.requestMatchers("/medicalrecord/image/{name}","/v*/api-doc*/**", "/swagger-ui/**")
 						.permitAll().requestMatchers(HttpMethod.OPTIONS).permitAll()
 						.requestMatchers("/medicalrecord/patient/{patientId}")
 						.hasAuthority("PATIENT")
