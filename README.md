@@ -1,2 +1,2 @@
 # HealthSync_CDAC_Project
-HealthSync is a comprehensive health management system developed as part of the CDAC PG-DAC course. This project aims to provide an efficient platform for doctors, patients, and healthcare providers to seamlessly interact and manage healthcare-related services.
+HealthSync is a secure platform designed to facilitate seamless data exchange between doctors, patients, and insurance providers. The system ensures privacy and integrity of health data through robust authentication and role-based authorization. Built with a microservices architecture, it handles image uploads and uses dual databases (MySQL and MongoDB) to store structured and unstructured data efficiently.
