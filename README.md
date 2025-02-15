@@ -1,0 +1,2 @@
+HealthSync is a secure platform designed to facilitate seamless data exchange between doctors, patients, and insurance providers. The system ensures privacy and integrity of health data through robust authentication and role-based authorization. Built with a microservices architecture, it handles image uploads and uses dual databases (MySQL and MongoDB) to store structured and unstructured data efficiently.
+In this project, I used a microservices architecture, so in this repository, I have created a separate branch for each microservice of my project.
